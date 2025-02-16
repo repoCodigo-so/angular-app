@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { TransporteService } from '../../services/transporte.service';
+import { FiltrarResponseDto } from '../../dto/filtrar.dto';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,62 +18,59 @@ import { TransporteService } from '../../services/transporte.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  // Filtros
-  anioInicio: number = 0;
-  anioFin: number = 0;
-  mesInicio: number = 0;
-  mesFin: number = 0;
-  transporte: string = '';
-  variable: string = ''; // Ej. "Ingresos por pasaje", "Pasajeros transportados", etc.
+  // Opciones para los filtros
+  anioOptions: number[] = [1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
+  mesOptions: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  // Ejemplo de transportes, ajusta o expánde según sea necesario
+  transporteOptions: string[] = [
+    'Tren Eléctrico',
+    'Macrobús Servicio Alimentador',
+    'Mi Transporte Eléctrico',
+    'MI Macro Periférico Alimentador',
+    'Trolebús',
+    'Sistema Integral del Tren Ligero',
+    'Mi Macro Periférico Alimentador',
+    'Mi Macro Periférico Troncal',
+    'Macrobús Servicio Troncal'
+  ];
 
-  datos: any[] = [];
+  // Filtros (valores seleccionados)
+  anioInicio: number = this.anioOptions[0];
+  anioFin: number = this.anioOptions[this.anioOptions.length - 1];
+  mesInicio: number = this.mesOptions[0];
+  mesFin: number = this.mesOptions[this.mesOptions.length - 1];
+  // Para transporte, se puede seleccionar uno o más valores. Por simplicidad, usaremos un array.
+  transporte: string[] = [];
 
-  // Datos para la gráfica lineal
-  chartData: any[] = [];
-  view: [number, number] = [700, 400];
-  showXAxis = true;
-  showYAxis = true;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Periodo';
-  showYAxisLabel = true;
-  yAxisLabel = 'Valor';
+  // Estadísticas obtenidas
+  stats: FiltrarResponseDto = {
+    ingresosPorPasaje: 0,
+    kilometrosRecorridos: 0,
+    longitudServicio: 0,
+    pasajerosTransportados: 0,
+    unidadesEnOperacion: 0
+  };
 
-  constructor(private transporteService: TransporteService) {}
+  constructor(private authService: AuthService, private transporteService: TransporteService) {}
 
   ngOnInit(): void {
     this.buscar();
   }
 
   buscar(): void {
+    // Llamada al servicio, pasando el array de transportes seleccionado
     this.transporteService.obtenerFiltrado(
       this.anioInicio,
       this.anioFin,
       this.mesInicio,
       this.mesFin,
       this.transporte,
-      this.variable
-    ).subscribe(response => {
-      this.datos = response;
-      this.generarChartData();
+    ).subscribe((response: FiltrarResponseDto) => {
+      this.stats = response;
     });
-  }
-
-  generarChartData(): void {
-    // Agrupar datos por período (Año-Mes) y sumar el "valor"
-    const agrupado: { [key: string]: number } = {};
-    this.datos.forEach(item => {
-      const periodo = `${item.anio}-${String(item.id_mes).padStart(2, '0')}`;
-      agrupado[periodo] = (agrupado[periodo] || 0) + item.valor;
-    });
-    this.chartData = Object.keys(agrupado).map(periodo => ({
-      name: periodo,
-      value: agrupado[periodo]
-    }));
   }
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    window.location.href = '/login';
+    this.authService.logout();  // Aquí se llama a tu servicio de autenticación para cerrar la sesión
   }
 }

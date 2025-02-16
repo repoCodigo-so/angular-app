@@ -1,12 +1,14 @@
+// src/app/services/transporte.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { FiltrarResponseDto } from '../dto/filtrar.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransporteService {
-  private apiUrl = 'http://localhost:3000/transporte'; // Ajusta según tu backend
+  private apiUrl = 'http://localhost:3000/api/transporte'; // Ajusta según tu backend
 
   constructor(private http: HttpClient) {}
 
@@ -15,18 +17,29 @@ export class TransporteService {
     anioFin?: number,
     mesInicio?: number,
     mesFin?: number,
-    transporte?: string,
-    variable?: string
-  ): Observable<any> {
+    transporte?: string[],
+  ): Observable<FiltrarResponseDto> {
     const headers = this.getAuthHeaders();
     let url = `${this.apiUrl}/filtrar?`;
-    if (anioInicio) url += `anioInicio=${anioInicio}&`;
-    if (anioFin) url += `anioFin=${anioFin}&`;
-    if (mesInicio) url += `mesInicio=${mesInicio}&`;
-    if (mesFin) url += `mesFin=${mesFin}&`;
-    if (transporte) url += `transporte=${transporte}&`;
-    if (variable) url += `variable=${variable}&`;
-    return this.http.get(url, { headers });
+
+    if (anioInicio) {
+      url += `anioInicio=${anioInicio}&`;
+    }
+    if (anioFin) {
+      url += `anioFin=${anioFin}&`;
+    }
+    if (mesInicio) {
+      url += `mesInicio=${mesInicio}&`;
+    }
+    if (mesFin) {
+      url += `mesFin=${mesFin}&`;
+    }
+    if (transporte && transporte.length > 0) {
+      // Enviamos el array convertido a una cadena separada por comas
+      url += `transporte=${transporte.join(',')}&`;
+    }
+
+    return this.http.get<FiltrarResponseDto>(url, { headers });
   }
 
   private getAuthHeaders(): HttpHeaders {

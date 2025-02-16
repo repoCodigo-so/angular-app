@@ -1,159 +1,102 @@
-// Variables de diseño
-$primary-color: #007bff;
-$secondary-color: #6c757d;
-$success-color: #28a745;
-$danger-color: #dc3545;
-$light-color: #f8f9fa;
-$dark-color: #343a40;
-$border-radius: 0.5rem;
-$box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-$transition-speed: 0.3s;
+// Variables de colores
+$primary-color: #4a90e2;
+$primary-hover: #357ABD;
+$background-light: #ffffff;
+$border-color: #d1d1d1;
+$text-color: #444;
+$input-bg: #f9f9f9;
 
-// Tipografía base
-$font-family-base: 'Roboto', sans-serif;
+.filter-form {
+  display: flex;
+  flex-direction: column;
+  background: $background-light;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-// Global styles
-* {
-  box-sizing: border-box;
-}
-body {
-  font-family: $font-family-base;
-  background-color: #eef2f7;
-  margin: 0;
-  padding: 0;
-  color: $dark-color;
-}
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
 
-// Container principal con padding y responsive
-.container {
-  padding: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 300px;
 
-// Cards personalizadas para secciones
-.card {
-  background-color: #fff;
-  border: none;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow;
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  transition: transform $transition-speed ease;
+      label {
+        font-weight: 600;
+        color: $text-color;
+        margin-bottom: 5px;
+      }
 
-  &:hover {
-    transform: translateY(-3px);
-  }
+      input,
+      select {
+        padding: 10px;
+        border: 1px solid $border-color;
+        border-radius: 8px;
+        background: $input-bg;
+        font-size: 14px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 
-  .card-header {
-    background-color: $primary-color;
-    color: #fff;
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-
-  .card-body {
-    padding: 1.5rem;
-  }
-}
-
-// Estilos para formularios
-.form-label {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-.form-control {
-  border: 1px solid $secondary-color;
-  border-radius: $border-radius;
-  padding: 0.5rem 0.75rem;
-  transition: border-color $transition-speed;
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
-  }
-}
-
-// Botones modernos
-.btn {
-  border: none;
-  border-radius: $border-radius;
-  padding: 0.5rem 1.25rem;
-  font-weight: 600;
-  transition: background-color $transition-speed, transform $transition-speed;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-  &.btn-primary {
-    background-color: $primary-color;
-    color: #fff;
-    &:hover {
-      background-color: darken($primary-color, 7%);
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+          background: #fff;
+          box-shadow: 0 0 5px rgba($primary-color, 0.3);
+        }
+      }
     }
-  }
-  &.btn-secondary {
-    background-color: $secondary-color;
-    color: #fff;
-    &:hover {
-      background-color: darken($secondary-color, 7%);
+
+    /* Estilos para el select múltiple */
+    select[multiple] {
+      height: auto;
+      padding: 8px;
+      background: white;
+      border: 1px solid $border-color;
+      border-radius: 8px;
     }
-  }
-  &.btn-danger {
-    background-color: $danger-color;
-    color: #fff;
-    &:hover {
-      background-color: darken($danger-color, 7%);
+
+    /* Estilos para el botón Buscar */
+    .btn-primary {
+      margin-bottom: 0;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, $primary-color, $primary-hover);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 3px 6px rgba($primary-color, 0.2);
+
+      &:hover {
+        background: linear-gradient(135deg, $primary-hover, $primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba($primary-hover, 0.3);
+      }
     }
   }
 }
 
-// Tabla de resultados
-.table-responsive {
-  margin-top: 1rem;
-  overflow-x: auto;
-}
-.table {
-  width: 100%;
-  margin-bottom: 0;
-  background-color: #fff;
-  border-collapse: collapse;
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .filter-form {
+    .form-row {
+      flex-direction: column;
+      align-items: stretch;
 
-  th, td {
-    padding: 0.75rem;
-    text-align: center;
-    border: 1px solid #dee2e6;
-  }
-  thead {
-    background-color: $dark-color;
-    color: #fff;
-  }
-  tbody tr:nth-child(even) {
-    background-color: $light-color;
-  }
-  tbody tr:hover {
-    background-color: lighten($primary-color, 40%);
-  }
-}
+      .form-group {
+        width: 100%;
+      }
 
-// Responsive: Ajustes en pantallas medianas y pequeñas
-@media (max-width: 992px) {
-  .card-body {
-    padding: 1rem;
-  }
-  .row.g-3 > [class^="col-"] {
-    margin-bottom: 1rem;
-  }
-}
-@media (max-width: 576px) {
-  .d-flex {
-    flex-direction: column;
-    align-items: flex-start !important;
-  }
-  .btn {
-    width: 100%;
-    margin-bottom: 0.5rem;
+      .btn-primary {
+        width: 100%;
+      }
+    }
   }
 }

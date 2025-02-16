@@ -20,7 +20,10 @@ export class LoginComponent {
   onSubmit(): void {
     this.authService.login(this.credentials).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: (err) => console.error('Error en login:', err)
+      error: (err) => {
+        console.error('Error en login:', err);
+        alert("Error en login, intente de nuevo");
+      }
     });
   }
 }
