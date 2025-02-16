@@ -5,6 +5,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { TransporteService } from '../../services/transporte.service';
 import { FiltrarResponseDto } from '../../dto/filtrar.dto';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -51,7 +52,7 @@ export class DashboardComponent implements OnInit {
     unidadesEnOperacion: 0
   };
 
-  constructor(private authService: AuthService, private transporteService: TransporteService) {}
+  constructor(private authService: AuthService, private transporteService: TransporteService, private router: Router) {}
 
   ngOnInit(): void {
     this.buscar();
@@ -71,6 +72,7 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();  // Aquí se llama a tu servicio de autenticación para cerrar la sesión
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

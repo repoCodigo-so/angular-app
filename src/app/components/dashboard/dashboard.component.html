@@ -2,6 +2,9 @@
   <div class="card mb-4 shadow">
     <div class="card-header">
       <h3>Filtros de Búsqueda</h3>
+      <div class="text-end mt-3">
+        <button (click)="logout()" class="btn btn-danger">Cerrar Sesión</button>
+      </div>
     </div>
     <div class="card-body">
       <form (ngSubmit)="buscar()" class="filter-form">
@@ -40,9 +43,6 @@
           </div>
         </div>
       </form>
-      <div class="text-end mt-3">
-        <button (click)="logout()" class="btn btn-danger">Cerrar Sesión</button>
-      </div>
     </div>
   </div>
 
