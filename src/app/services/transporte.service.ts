@@ -8,7 +8,7 @@ import { FiltrarResponseDto } from '../dto/filtrar.dto';
   providedIn: 'root'
 })
 export class TransporteService {
-  private apiUrl = 'http://localhost:3000/api/transporte'; // Ajusta según tu backend
+  private apiUrl = 'http://54.196.145.63/api/transporte'; // Ajusta según tu backend
 
   constructor(private http: HttpClient) {}
 
